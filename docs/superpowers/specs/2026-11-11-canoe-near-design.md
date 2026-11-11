@@ -90,9 +90,10 @@ Setiap kegagalan validasi menghasilkan `panic` dengan pesan yang jelas, misalnya
 | Navigasi | Link "Trip Budget" di header. |
 | `messages/{en,de,es,fr,pt}` | Key string baru di kelima locale agar tes paritas i18n tetap lolos. |
 
-### 4.3 Data demo
+### 4.3 Data demo dan skala demo
 
-`scripts/canoe-seed-demo.mjs` membuat satu Query flight, satu HotelTracker, dan satu CarTracker beserta snapshot harga berlabel `sample`. Skrip ini dipakai jika scraping gagal saat demo. Label "sample" tetap terlihat di UI.
+- **Penawaran sample:** jika `CANOE_SAMPLE_OFFERS=true`, `/api/canoe/offers` menambahkan tiga penawaran contoh (flight CGK→DPS, hotel Bali, mobil Ngurah Rai, dalam IDR). Labelnya diawali `Sample · ` dan ditandai `sample: true`, lalu ditampilkan dengan badge "sample". Data ini tidak ditulis ke database, sehingga halaman hotel/mobil upstream tidak terganggu. (Ini menggantikan rencana skrip seed DB.)
+- **Skala demo:** harga nyata (misalnya Rp1,5 juta ≈ 37 NEAR) jauh melebihi saldo testnet (10 NEAR per akun). Setiap quote dikalikan `NEXT_PUBLIC_CANOE_DEMO_SCALE_BPS` (default `100` = 1%). Nilai skala ditampilkan di UI dan ikut dihitung dalam `quote_hash`.
 
 ## 5. Alur data
 
