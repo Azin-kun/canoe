@@ -7,8 +7,9 @@ import settings from '../../messages/en/settings.json';
 import admin from '../../messages/en/admin.json';
 import hotels from '../../messages/en/hotels.json';
 import cars from '../../messages/en/cars.json';
+import canoe from '../../messages/en/canoe.json';
 
-const messages = { ...common, ...components, ...pages, ...settings, ...admin, ...hotels, ...cars };
+const messages = { ...common, ...components, ...pages, ...settings, ...admin, ...hotels, ...cars, ...canoe };
 
 const translator = (namespace?: string) =>
   createTranslator({ locale: 'en', messages, namespace: namespace as never });

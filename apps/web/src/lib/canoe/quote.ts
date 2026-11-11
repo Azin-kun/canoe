@@ -20,7 +20,7 @@ export function applyScale(yocto: bigint, scaleBps: number): bigint {
 export function nearToYocto(near: string): bigint {
   const text = near.trim();
   if (!/^\d+(\.\d{1,24})?$/.test(text)) throw new Error(`Invalid NEAR amount: ${near}`);
-  const [whole, fraction = ''] = text.split('.');
+  const [whole = '0', fraction = ''] = text.split('.');
   return BigInt(whole) * YOCTO_PER_NEAR + BigInt(fraction.padEnd(24, '0'));
 }
 
