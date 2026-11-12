@@ -2,7 +2,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type PropsWithChildren } from 'react';
 import { FailoverRpcProvider, JsonRpcProvider } from 'near-api-js';
 import { NearConnector, type EventMap } from '@hot-labs/near-connect';
-import { CANOE_NETWORK, CANOE_RPC_URLS } from '@/lib/canoe/config';
+import { CANOE_EXCLUDED_WALLETS, CANOE_NETWORK, CANOE_RPC_URLS } from '@/lib/canoe/config';
 import { TxFailedError, txFailure, txHash } from '@/lib/canoe/tx';
 
 type Wallet = Awaited<ReturnType<NearConnector['wallet']>>;
@@ -22,7 +22,11 @@ const NearContext = createContext<NearContextValue | undefined>(undefined);
 
 export function NearProvider({ children }: PropsWithChildren) {
   const connector = useMemo(
-    () => new NearConnector({ network: CANOE_NETWORK, providers: { mainnet: CANOE_RPC_URLS.mainnet, testnet: CANOE_RPC_URLS.testnet } }),
+    () => new NearConnector({
+      network: CANOE_NETWORK,
+      providers: { mainnet: CANOE_RPC_URLS.mainnet, testnet: CANOE_RPC_URLS.testnet },
+      excludedWallets: CANOE_EXCLUDED_WALLETS,
+    }),
     [],
   );
   const rpc = useMemo(

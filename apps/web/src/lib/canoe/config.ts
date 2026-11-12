@@ -18,3 +18,11 @@ export const QUOTE_TTL_MS = 10 * 60 * 1000;
 const EXPLORER = CANOE_NETWORK === 'mainnet' ? 'https://nearblocks.io' : 'https://testnet.nearblocks.io';
 export const explorerTxUrl = (hash: string) => `${EXPLORER}/txns/${hash}`;
 export const explorerAccountUrl = (account: string) => `${EXPLORER}/address/${account}`;
+
+/** Wallets meant for developers; hidden from the picker unless NEXT_PUBLIC_CANOE_SHOW_DEV_WALLETS=true. */
+export const DEV_WALLET_IDS = ['near-cli', 'ethereum-wallets'] as const;
+export const CANOE_EXCLUDED_WALLETS: string[] =
+  process.env.NEXT_PUBLIC_CANOE_SHOW_DEV_WALLETS === 'true' ? [] : [...DEV_WALLET_IDS];
+
+export const METEOR_WALLET_URL = 'https://wallet.meteorwallet.app';
+export const TESTNET_FAUCET_URL = 'https://docs.near.org/tools/faucet';
