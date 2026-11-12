@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { FailoverRpcProvider, JsonRpcProvider } from 'near-api-js';
 import { NearConnector, type EventMap } from '@hot-labs/near-connect';
 import { CANOE_NETWORK, CANOE_RPC_URLS } from '@/lib/canoe/config';
+import { TxFailedError, txFailure, txHash } from '@/lib/canoe/tx';
 
 type Wallet = Awaited<ReturnType<NearConnector['wallet']>>;
 type ViewParams = { contractId: string; method: string; args?: Record<string, unknown> };
@@ -18,14 +19,6 @@ interface NearContextValue {
 }
 
 const NearContext = createContext<NearContextValue | undefined>(undefined);
-
-function txHash(outcome: unknown): string {
-  if (outcome && typeof outcome === 'object' && 'transaction_outcome' in outcome) {
-    const tx = (outcome as { transaction_outcome?: { id?: unknown } }).transaction_outcome;
-    if (tx && typeof tx.id === 'string') return tx.id;
-  }
-  return '';
-}
 
 export function NearProvider({ children }: PropsWithChildren) {
   const connector = useMemo(
@@ -99,7 +92,10 @@ export function NearProvider({ children }: PropsWithChildren) {
         receiverId: contractId,
         actions: [{ type: 'FunctionCall', params: { methodName: method, args, gas, deposit } }],
       });
-      return { hash: txHash(outcome) };
+      const hash = txHash(outcome);
+      const failure = txFailure(outcome);
+      if (failure) throw new TxFailedError(failure, hash);
+      return { hash };
     },
     [wallet],
   );

@@ -5,9 +5,10 @@ import { NearProvider, useNearWallet } from './NearProvider';
 import { TripCreateForm } from './TripCreateForm';
 import { OfferList } from './OfferList';
 import { PaymentHistory } from './PaymentHistory';
-import { CANOE_CONTRACT, CANOE_DEMO_SCALE_BPS, CANOE_MERCHANT } from '@/lib/canoe/config';
+import { CANOE_CONTRACT, CANOE_DEMO_SCALE_BPS, CANOE_MERCHANT, explorerTxUrl } from '@/lib/canoe/config';
 import { createTripCall, payQuoteArgs, remaining, type ContractPayment, type ContractTrip } from '@/lib/canoe/contract';
 import { buildQuote, formatNear } from '@/lib/canoe/quote';
+import { TxFailedError } from '@/lib/canoe/tx';
 import { CATEGORIES, type Category, type Offer, type Rate } from '@/lib/canoe/types';
 import styles from './TripBudget.module.css';
 
@@ -32,6 +33,7 @@ function TripBudgetInner() {
   const [txByHash, setTxByHash] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorTx, setErrorTx] = useState<string | null>(null);
   const [chainVersion, setChainVersion] = useState(0);
 
   const loadChain = useCallback(async (account: string) => {
@@ -64,10 +66,12 @@ function TripBudgetInner() {
   const run = async (action: () => Promise<void>) => {
     setBusy(true);
     setError(null);
+    setErrorTx(null);
     try {
       await action();
     } catch (e) {
       setError(messageOf(e));
+      if (e instanceof TxFailedError && e.hash) setErrorTx(e.hash);
     } finally {
       setBusy(false);
       setChainVersion((v) => v + 1);
@@ -105,7 +109,12 @@ function TripBudgetInner() {
           : <button className={styles.button} type="button" disabled={loading} onClick={() => void signIn().catch((e: unknown) => setError(messageOf(e)))}>{loading ? t('loading') : t('connect')}</button>}
       </div>
 
-      {error ? <p className={styles.error} role="alert">{t('error', { message: error })}</p> : null}
+      {error ? (
+        <p className={styles.error} role="alert">
+          {t('error', { message: error })}
+          {errorTx ? <> <a href={explorerTxUrl(errorTx)} target="_blank" rel="noreferrer">{t('viewTx')}</a></> : null}
+        </p>
+      ) : null}
       {busy ? <p className={styles.muted} role="status">{t('working')}</p> : null}
 
       {signedAccountId && (!trip || !trip.open) ? (
