@@ -52,3 +52,15 @@ New three-step `/trip` page, budgets and prices in USD (live CoinGecko rate, abo
 
 Also checked: wallet picker without NEAR CLI / Ethereum Wallets by default; "You cancelled in your wallet. Nothing was paid."
 after closing the wallet dialog; 375 px phone width without horizontal scroll.
+
+## Demo video recording (2026-11-12)
+
+Transactions signed while capturing the screenshots used in the demo video (trip #3, `canoe-user1.testnet`,
+budget Flights $100 / Hotels $100 / Car rental $30).
+
+| Step | Transaction | Result |
+|------|-------------|--------|
+| `create_trip`, 0.6571 NEAR | [`GYERB9qtBBowu4B6MramoYLHFUdLZDcA3S2uf8zK838a`](https://testnet.nearblocks.io/txns/GYERB9qtBBowu4B6MramoYLHFUdLZDcA3S2uf8zK838a) | `trip_created`, trip id 3 |
+| `pay_quote` flight $95 (0.2753 NEAR) | [`9VkEG3PE5V6zfoBLAdf8kFjREdhbtszbNTTkGZTD7tHn`](https://testnet.nearblocks.io/txns/9VkEG3PE5V6zfoBLAdf8kFjREdhbtszbNTTkGZTD7tHn) | paid to `canoe-dev.testnet` |
+| `pay_quote` car $45 against $30 left | [`GvwXSuQFMuKesodFx9ee5j8vhRidbX49kDpkfeqFtfj7`](https://testnet.nearblocks.io/txns/GvwXSuQFMuKesodFx9ee5j8vhRidbX49kDpkfeqFtfj7) | **rejected**: `Over category limit: car` |
+| `withdraw_remaining` | [`BzsJsLYctrRyzKTTLngWCpqLP29Gd8tP1KiPLJ6G1F9e`](https://testnet.nearblocks.io/txns/BzsJsLYctrRyzKTTLngWCpqLP29Gd8tP1KiPLJ6G1F9e) | `trip_closed`, 0.3818 NEAR refunded |

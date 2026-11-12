@@ -6,6 +6,16 @@ flight, hotel and car rental prices separately. CANOE adds what flight-finder ex
 not have: **one combined trip budget**, held by a NEAR contract, that pays for tracked offers
 only when the traveller approves each payment from their own wallet.
 
+## Demo video
+
+[![CANOE demo video: What if your budget could say no?](docs/canoe/demo-poster.jpg)](https://github.com/Azin-kun/canoe/releases/download/hackathon-submission/canoe-demo-16x9.mp4)
+
+▶ [Watch the 71-second demo (1080p MP4)](https://github.com/Azin-kun/canoe/releases/download/hackathon-submission/canoe-demo-16x9.mp4) · [Vertical 30-second cut for X](https://github.com/Azin-kun/canoe/releases/download/hackathon-submission/canoe-x-9x16.mp4)
+
+The demo shows the real app and real NEAR testnet transactions. Narration is a local text-to-speech voice
+(Kokoro via Voicebox). Music: Elektronomia – Sky High [NCS Release], music provided by NoCopyrightSounds,
+free download/stream: http://ncs.io/skyhigh
+
 **Problem:** travel prices are watched in one tool and paid somewhere else. Nothing enforces
 the trip budget. CANOE locks the budget per category (flight / hotel / car). Every payment is a
 wallet-signed `pay_quote` that the contract checks against owner, expiry, duplicate quote and
@@ -65,6 +75,16 @@ OpenAI, Gemini, local models). CANOE adds no AI calls.
 Testnet only. A `pay_quote` to a merchant account that does not exist would record the payment
 while the transfer refunds to the contract. The demo uses the existing `canoe-dev.testnet`. No
 stablecoins, NEAR Intents or meta transactions yet.
+
+## Independent Project Disclosure
+
+This is an independent project.
+
+The same team also submits:
+[Resolve](https://github.com/Azin-kun/resolve).
+
+Both projects have separate purposes,
+codebases, user journeys, and implementations.
 
 ---
 
