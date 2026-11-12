@@ -17,6 +17,7 @@ export interface ThemeFamily {
 }
 
 export const THEME_FAMILIES: readonly ThemeFamily[] = [
+  { id: 'nusa', label: 'Nusa', description: 'Bright travel blue with orange actions', lightAccent: '#0172c9', darkAccent: '#4db2ff' },
   { id: 'altitude', label: 'Altitude', description: 'Deep teal and warm cream', lightAccent: '#1a4a52', darkAccent: '#80a8a5' },
   { id: 'midnight', label: 'Midnight', description: 'Neutral blue, no glow', lightAccent: '#2563eb', darkAccent: '#60a5fa' },
   { id: 'cyberpunk', label: 'Cyberpunk', description: 'Hot pink neon', lightAccent: '#c0208e', darkAccent: '#ff4fd8' },
@@ -29,7 +30,7 @@ export type ThemeMode = 'light' | 'dark';
 /** `<family>-<mode>`, validated by isThemeId. */
 export type ThemeId = string;
 
-export const DEFAULT_THEME: ThemeId = 'altitude-dark';
+export const DEFAULT_THEME: ThemeId = 'nusa-light';
 
 const FAMILY_IDS = new Set<string>(THEME_FAMILIES.map((f) => f.id));
 
@@ -85,7 +86,7 @@ export function isLightTheme(theme: ThemeId) {
 /** The same family in the opposite mode (what the light/dark toggle applies). */
 export function getNextToggleTheme(theme: ThemeId): ThemeId {
   const family = getThemeFamily(theme);
-  const safe = FAMILY_IDS.has(family) ? family : 'altitude';
+  const safe = FAMILY_IDS.has(family) ? family : getThemeFamily(DEFAULT_THEME);
   return themeId(safe, getThemeMode(theme) === 'light' ? 'dark' : 'light');
 }
 

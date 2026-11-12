@@ -6,6 +6,7 @@ import { TravelNav } from '@/components/hotels/TravelNav';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { TripBudget } from '@/components/canoe/TripBudget';
 import styles from '@/components/hotels/Hotels.module.css';
+import canoeStyles from '@/components/canoe/TripBudget.module.css';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,10 +18,10 @@ export default async function TripPage() {
     <main className={styles.root}>
       <ThemeToggle />
       <TravelNav active="trip" />
-      <header className={styles.hero}>
-        <span className={styles.eyebrow}>{t('eyebrow')}</span>
+      <header className={canoeStyles.hero}>
+        <span className={canoeStyles.heroEyebrow}>{t('eyebrow')}</span>
         <h1>{t('headline')}</h1>
-        <p className={styles.muted}>{t('intro')}</p>
+        <p>{t('intro')}</p>
       </header>
       <TripBudget />
     </main>
