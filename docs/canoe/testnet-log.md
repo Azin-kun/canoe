@@ -37,3 +37,18 @@ Quotes use the live CoinGecko rate (1 NEAR = 64,652 IDR at the time) at the 1% d
 
 Found during this run and fixed afterwards: the page did not show an error for the rejected payment (wallets
 resolve with a failed outcome instead of throwing), and offers stayed payable after the trip was closed.
+
+## Beginner-friendly USD UI run (2026-11-12)
+
+New three-step `/trip` page, budgets and prices in USD (live CoinGecko rate, about $3.51 per NEAR at the time,
+1% demo scale). Wallet: `canoe-user1.testnet` through the NEAR CLI option (`NEXT_PUBLIC_CANOE_SHOW_DEV_WALLETS=true`).
+
+| Step | Transaction | Result |
+|------|-------------|--------|
+| Step 2: budget Flights $100 / Hotels $100 / Car rental $30 → "Set aside 0.6552 NEAR" | [`DTg6PEuaUZeLzhnmTHrKrHEaNKMi3RyvqUXfrtsEPbHj`](https://testnet.nearblocks.io/txns/DTg6PEuaUZeLzhnmTHrKrHEaNKMi3RyvqUXfrtsEPbHj) | `trip_created`, trip id 2; card shows "Spent ≈ $0 · Left ≈ $30 (0.0854 NEAR)" for car rental |
+| Step 3: "Pay $45 · 0.1282 NEAR" on the sample car (over the $30 car budget) | [`7CbFs7GFTsCv9GCzYwKquvENewQhAM9Tyj1QHpNafi7C`](https://testnet.nearblocks.io/txns/7CbFs7GFTsCv9GCzYwKquvENewQhAM9Tyj1QHpNafi7C) | **rejected on-chain**: `Over category limit: car` (UI message covered by unit tests; not shown live because the NEAR CLI verify field was unreachable in the small browser pane) |
+| Step 3: "Pay $95 · 0.2706 NEAR" on the sample flight | [`9YsdmvBB1zNB7syK2w6zczirfzcwe3VERxGexVnshndt`](https://testnet.nearblocks.io/txns/9YsdmvBB1zNB7syK2w6zczirfzcwe3VERxGexVnshndt) | `payment` to `canoe-dev.testnet`; card shows "Spent ≈ $95 · Left ≈ $5", "Your payments" lists "Flights · ≈ $95 · 0.2706 NEAR" |
+| "End trip & return unused money" | [`5RZDqkghXvvo31FW1QWL4j3T76nQDyZVHEiJBEX8oizf`](https://testnet.nearblocks.io/txns/5RZDqkghXvvo31FW1QWL4j3T76nQDyZVHEiJBEX8oizf) | `trip_closed`, 0.3846 NEAR refunded; Step 2 shows the form and "Your last trip budget has ended…" |
+
+Also checked: wallet picker without NEAR CLI / Ethereum Wallets by default; "You cancelled in your wallet. Nothing was paid."
+after closing the wallet dialog; 375 px phone width without horizontal scroll.
