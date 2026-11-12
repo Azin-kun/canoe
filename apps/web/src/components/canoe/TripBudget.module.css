@@ -24,3 +24,30 @@
 .badge { font: 600 .7rem var(--font-body); text-transform: uppercase; letter-spacing: .08em; color: var(--accent); background: var(--accent-glow); border-radius: 999px; padding: .1rem .55rem; }
 .muted { color: var(--text-secondary); font-size: .85rem; }
 .error { border-left: 3px solid var(--danger, #c1272d); padding: .8rem 1rem; background: var(--surface); overflow-wrap: anywhere; }
+.step { border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-card); padding: 1.25rem; display: grid; gap: 1rem; }
+.step h2 { font-family: var(--font-display); font-weight: 700; margin: 0; font-size: 1.2rem; }
+.step h3 { font-size: 1rem; margin: 0; }
+.active { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow), var(--shadow-card); }
+.locked { opacity: .65; }
+.done { }
+.stepHeader { display: flex; gap: .9rem; align-items: center; }
+.stepNumber { flex: none; width: 2.1rem; height: 2.1rem; border-radius: 999px; display: grid; place-items: center; font-weight: 700; background: var(--accent-glow); color: var(--accent); }
+.done .stepNumber { background: var(--accent); color: var(--bg); }
+.stepLabel { font: 600 .72rem var(--font-body); text-transform: uppercase; letter-spacing: .08em; color: var(--text-secondary); }
+.status { border-left: 4px solid var(--cta); background: var(--elevated); border-radius: var(--radius-md); padding: .7rem 1rem; font-weight: 600; }
+.help { border: 1px dashed var(--border); border-radius: var(--radius-md); background: var(--elevated); padding: .9rem 1rem; display: grid; gap: .5rem; font-size: .9rem; }
+.help ol { margin: 0; padding-left: 1.2rem; display: grid; gap: .35rem; }
+.help a { font-weight: 600; }
+.summary { margin: 0; font-size: .9rem; color: var(--text-secondary); }
+.money { display: flex; align-items: center; gap: .4rem; }
+.money input { flex: 1; min-width: 0; }
+.progress { width: 100%; height: .5rem; appearance: none; border: 0; border-radius: 999px; background: var(--elevated); overflow: hidden; }
+.progress::-webkit-progress-bar { background: var(--elevated); border-radius: 999px; }
+.progress::-webkit-progress-value { background: var(--accent); border-radius: 999px; }
+.progress::-moz-progress-bar { background: var(--accent); border-radius: 999px; }
+.details summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+.details p { margin: .5rem 0 0; font-size: .9rem; color: var(--text-secondary); line-height: 1.6; }
+@media (max-width: 480px) {
+  .row { align-items: stretch; }
+  .row .button { width: 100%; }
+}

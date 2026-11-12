@@ -1,4 +1,3 @@
-import { nearToYocto } from './quote';
 import { CATEGORIES, type Category, type Quote } from './types';
 
 export type ContractCategory = 'Flight' | 'Hotel' | 'Car';
@@ -42,13 +41,13 @@ export function remaining(trip: ContractTrip, category: Category): bigint {
   return BigInt(trip.limits[category]) - BigInt(trip.spent[category]);
 }
 
-export function createTripCall(limitsNear: Record<Category, string>, expiresAtMs: number) {
+export function createTripCall(limitsYocto: Record<Category, bigint>, expiresAtMs: number) {
   const limits: ContractAmounts = {
-    flight: nearToYocto(limitsNear.flight).toString(),
-    hotel: nearToYocto(limitsNear.hotel).toString(),
-    car: nearToYocto(limitsNear.car).toString(),
+    flight: limitsYocto.flight.toString(),
+    hotel: limitsYocto.hotel.toString(),
+    car: limitsYocto.car.toString(),
   };
-  const total = CATEGORIES.reduce((sum, c) => sum + BigInt(limits[c]), 0n);
+  const total = CATEGORIES.reduce((sum, c) => sum + limitsYocto[c], 0n);
   if (total <= 0n) throw new Error('Budget must be greater than zero');
   return { args: { limits, expires_at_ms: expiresAtMs }, deposit: total.toString() };
 }

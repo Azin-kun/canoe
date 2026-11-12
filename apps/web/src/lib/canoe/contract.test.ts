@@ -25,12 +25,12 @@ describe('remaining', () => {
 
 describe('createTripCall', () => {
   it('builds yocto limits and a matching deposit', () => {
-    const call = createTripCall({ flight: '1', hotel: '0.5', car: '0' }, 99);
+    const call = createTripCall({ flight: NEAR, hotel: NEAR / 2n, car: 0n }, 99);
     expect(call.args).toEqual({ limits: { flight: NEAR.toString(), hotel: (NEAR / 2n).toString(), car: '0' }, expires_at_ms: 99 });
     expect(call.deposit).toBe((3n * NEAR / 2n).toString());
   });
   it('rejects an empty budget', () => {
-    expect(() => createTripCall({ flight: '0', hotel: '0', car: '0' }, 99)).toThrow(/greater than zero/);
+    expect(() => createTripCall({ flight: 0n, hotel: 0n, car: 0n }, 99)).toThrow(/greater than zero/);
   });
 });
 
