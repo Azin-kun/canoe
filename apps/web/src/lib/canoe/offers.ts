@@ -66,10 +66,10 @@ export function carOffer(row: { id: string; label: string; latestPriceMinor: big
 /** Clearly labelled demo offers, enabled with CANOE_SAMPLE_OFFERS=true when live scraping is unavailable. */
 export function sampleOffers(now: Date): Offer[] {
   const observedAt = now.toISOString();
-  const base = { currency: 'IDR', observedAt, sourceUrl: null, sample: true } as const;
+  const base = { currency: 'USD', observedAt, sourceUrl: null, sample: true } as const;
   return [
-    { ...base, id: 'sample-flight-cgk-dps', category: 'flight', label: `${SAMPLE_PREFIX}CGK → DPS · 2026-12-10`, price: 1_500_000 },
-    { ...base, id: 'sample-hotel-bali', category: 'hotel', label: `${SAMPLE_PREFIX}Bali beach hotel · 3 nights`, price: 1_350_000 },
-    { ...base, id: 'sample-car-dps', category: 'car', label: `${SAMPLE_PREFIX}Ngurah Rai economy car · 3 days`, price: 750_000 },
+    { ...base, id: 'sample-flight-cgk-dps', category: 'flight', label: `${SAMPLE_PREFIX}CGK → DPS · 2026-12-10`, price: 95 },
+    { ...base, id: 'sample-hotel-bali', category: 'hotel', label: `${SAMPLE_PREFIX}Bali beach hotel · 3 nights`, price: 85 },
+    { ...base, id: 'sample-car-dps', category: 'car', label: `${SAMPLE_PREFIX}Ngurah Rai economy car · 3 days`, price: 45 },
   ];
 }

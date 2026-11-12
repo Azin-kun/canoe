@@ -36,9 +36,10 @@ describe('offer builders', () => {
     expect(carOffer({ id: 'c1', label: 'Economy', latestPriceMinor: 9900n, currency: 'EUR', lastCheckedAt: null })).toMatchObject({ category: 'car', price: 99 });
     expect(carOffer({ id: 'c2', label: 'X', latestPriceMinor: null, currency: 'EUR', lastCheckedAt: null })).toBeNull();
   });
-  it('labels sample offers', () => {
+  it('labels sample offers and prices them in USD', () => {
     const samples = sampleOffers(new Date('2026-11-11T00:00:00Z'));
     expect(samples.map((s) => s.category)).toEqual(['flight', 'hotel', 'car']);
     expect(samples.every((s) => s.sample && s.label.startsWith('Sample · '))).toBe(true);
+    expect(samples.map((s) => [s.currency, s.price])).toEqual([['USD', 95], ['USD', 85], ['USD', 45]]);
   });
 });

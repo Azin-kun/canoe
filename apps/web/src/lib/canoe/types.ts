@@ -11,6 +11,8 @@ export interface Offer {
   observedAt: string;
   sourceUrl: string | null;
   sample: boolean;
+  /** Set when the price was converted for display; the scraped price and currency. */
+  original?: { price: number; currency: string };
 }
 
 export interface Rate {
