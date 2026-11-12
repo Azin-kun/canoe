@@ -69,7 +69,7 @@
       "scrapeInterval": "Intervalle d’extraction",
       "everyHours": "Toutes les {hours, plural, one {# heure} other {# heures}}",
       "defaultCurrency": "Devise par défaut",
-      "autoDetect": "Détection auto",
+      "autoDetect": "USD (par défaut)",
       "otherCurrency": "Autre...",
       "currencyCodePlaceholder": "Code ISO 4217 à 3 lettres",
       "defaultSearchMethod": "Méthode de recherche par défaut",

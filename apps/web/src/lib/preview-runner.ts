@@ -39,6 +39,7 @@ import {
   isPreviewTooFarInFuture,
   previewTooFarInFutureMessage,
 } from '@/lib/preview-utils';
+import { scrapeCurrency } from './scraper/currency-default';
 
 const RETRYABLE_FAILURES: ExtractionFailureReason[] = [
   'empty_extraction',
@@ -611,7 +612,7 @@ export async function runPreview(
   const config = travel.config;
   const { origins, destinations, isOneWay } = validatePreviewPayload(payload, config?.previewMaxCombos ?? 24);
   const { dateFrom, dateTo, maxPrice, maxStops, maxDurationHours, preferredAirlines, timePreference, strictDepartureTime, cabinClass, tripType, currency: bodyCurrency } = payload;
-  const currency: string | null = config?.defaultCurrency ?? bodyCurrency;
+  const currency: string = scrapeCurrency(config?.defaultCurrency, bodyCurrency);
   const provider = config?.provider ?? 'anthropic';
   const model = config?.model ?? 'claude-haiku-4-5-20251001';
   const credentials = CLI_PROVIDERS[provider] ? undefined : await resolveProviderCredentials(provider);

@@ -23,6 +23,7 @@ import { TravelJobError } from '../travel/errors';
 import { recordFlightAlertInTransaction } from '../notifications/flights';
 import { flightDayStart, hasFlightExpired } from '@/lib/criteria/flight-expiry';
 import { flightIdentifiers } from './identity/flight';
+import { scrapeCurrency } from './currency-default';
 
 const RETRYABLE_FAILURES: ExtractionFailureReason[] = [
   'empty_extraction',
@@ -639,7 +640,7 @@ export async function runScrapeForQuery(
   }
 
   const config = currentTravelContext()!.config;
-  const effectiveCurrency = query.currency ?? config?.defaultCurrency ?? null;
+  const effectiveCurrency = scrapeCurrency(query.currency, config?.defaultCurrency);
   const effectiveCountry = vpnCountry ?? config?.defaultCountry ?? null;
 
   const searchParams = query.isSeed

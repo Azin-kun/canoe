@@ -231,7 +231,7 @@
     "maxTwoStops": "2 escales max",
     "maxDuration": "Durée max du voyage (heures)",
     "currency": "Devise",
-    "autoDetect": "Détection auto",
+    "autoDetect": "USD (par défaut)",
     "preferredAirlines": "Compagnies préférées",
     "airlinesPlaceholder": "ex. Delta, United",
     "showAvailableFlights": "Afficher les vols disponibles",

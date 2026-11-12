@@ -231,7 +231,7 @@
     "maxTwoStops": "Max 2 stops",
     "maxDuration": "Max trip duration (hours)",
     "currency": "Currency",
-    "autoDetect": "Auto-detect",
+    "autoDetect": "USD (default)",
     "preferredAirlines": "Preferred airlines",
     "airlinesPlaceholder": "e.g. Delta, United",
     "showAvailableFlights": "Show available flights",

@@ -231,7 +231,7 @@
     "maxTwoStops": "Max. 2 Zwischenstopps",
     "maxDuration": "Max. Reisedauer (Stunden)",
     "currency": "Währung",
-    "autoDetect": "Automatisch erkennen",
+    "autoDetect": "USD (Standard)",
     "preferredAirlines": "Bevorzugte Airlines",
     "airlinesPlaceholder": "z. B. Delta, United",
     "showAvailableFlights": "Verfügbare Flüge anzeigen",
