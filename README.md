@@ -1,3 +1,75 @@
+# CANOE — trip budgets with on-chain payment approval (NEAR HACKATHON 2026)
+
+CANOE is built at NEAR HACKATHON (tracks: `realworld`, `open`). It is a fork of
+[affromero/flight-finder](https://github.com/affromero/flight-finder) (MIT), which tracks
+flight, hotel and car rental prices separately. CANOE adds what flight-finder explicitly does
+not have: **one combined trip budget**, held by a NEAR contract, that pays for tracked offers
+only when the traveller approves each payment from their own wallet.
+
+**Problem:** travel prices are watched in one tool and paid somewhere else. Nothing enforces
+the trip budget. CANOE locks the budget per category (flight / hotel / car). Every payment is a
+wallet-signed `pay_quote` that the contract checks against owner, expiry, duplicate quote and
+remaining category limit before it transfers NEAR to the merchant.
+
+**What is real and what is simulated:** the NEAR transfer to the merchant account is real on
+testnet. Booking with the airline, hotel or rental company is simulated. Quotes are scaled to 1%
+of the real price (shown in the UI and part of the quote hash) so they fit testnet balances.
+
+## Try it (do X → see Y)
+
+Requirements: Docker, Node 22, a NEAR testnet wallet (for example Meteor or HOT) with a few testnet NEAR.
+
+1. `git clone https://github.com/Azin-kun/canoe && cd canoe` → you see the flight-finder monorepo plus `contracts/canoe-budget`.
+2. `cp .env.example .env`, set `POSTGRES_PASSWORD`, `ADMIN_SESSION_SECRET`, `CRON_SECRET` (any random values) and add `CANOE_SAMPLE_OFFERS=true`. Run `docker compose up -d --build` → `curl -s localhost:3003/api/health` returns `"ok":true`.
+3. Run `docker compose exec web node /app/packages/cli/dist/index.js access setup`, enter an Admin profile name and a shared password, then open `http://localhost:3003` and sign in with that password → you land on the flight search page. (Optional: in Settings pick an AI provider/model and paste your own API key for flight search.)
+4. Click **Trip Budget** in the top navigation → you see "Demo mode: this uses free NEAR test tokens…" and three steps; Steps 2 and 3 say "Connect a wallet first."
+5. In Step 1 click **Connect wallet** and pick a testnet wallet (no wallet yet? follow "New to wallets?": Meteor Wallet + NEAR faucet) → Step 1 shows "Connected as <your-account>.testnet" with a ✓.
+6. In Step 2 set Flights $100, Hotels $100, Car rental **$30** and click **Set aside … NEAR**, then approve in the wallet → a budget card shows three bars with "Spent ≈ $0 · Left ≈ …".
+7. In Step 3 click **Pay $95 · … NEAR** on the sample flight and approve → the flight bar fills to 95% and "Your payments" lists "Flights · ≈ $95" with a receipt link (the NEAR transfer to `canoe-dev.testnet` on the explorer).
+8. Click **Pay $45 · … NEAR** on the sample car and approve → the contract refuses it and the page says "This costs more than what's left in your Car rental budget. Nothing was paid."
+9. Click **End trip & return unused money** and approve → Step 2 shows the form again and the unused NEAR is back in your wallet.
+
+Prices: flight scraping defaults to USD, and every price on the Trip Budget page is shown in USD (other currencies are converted through the live NEAR price). Developer option: `NEXT_PUBLIC_CANOE_SHOW_DEV_WALLETS=true` adds the NEAR CLI wallet, which shows the exact `near` command and asks for the transaction hash.
+
+Contract only (no UI): `bash contracts/canoe-budget/scripts/test.sh` → `test result: ok. 16 passed`.
+
+## On-chain
+
+- Contract: `budget.canoe-dev.testnet` ([explorer](https://testnet.nearblocks.io/address/budget.canoe-dev.testnet)), source `contracts/canoe-budget/src/lib.rs`
+- Methods: `create_trip` (payable), `pay_quote`, `withdraw_remaining`, views `get_trip`, `get_trips_by_owner`, `get_payments`. Events: NEP-297 `standard: "canoe"`.
+- Recorded testnet transactions (first UI run): create trip `3F1R7kkgS2jiBLvZWV1j5wvvWUsHcuvUTfXZ9ZTGRpi2`, payment `8CUccXThwA54f2C7saySLSSDCYieeL5RDzfWki8h1Cqf`, rejected over-limit `6HaHDn2vvZWhD4Pu2FkT3WsZ3Jt3kpr8QMq8RMMqUzem`, withdraw `7RvhwDhGaymZcJGTHajz8eGwbWRx7RXhy5RCKktLBsdM` (details, including the USD UI run, in `docs/canoe/testnet-log.md`).
+
+## What was built during the hackathon
+
+Baseline: tag `pre-hackathon` (upstream flight-finder `266d798`). Submission: tag `hackathon-submission`.
+Full diff: `https://github.com/Azin-kun/canoe/compare/pre-hackathon...hackathon-submission`
+
+- `contracts/canoe-budget/`: Rust contract with 16 unit tests, deployed to `budget.canoe-dev.testnet`
+- `apps/web/src/lib/canoe/`: quote and hash, USD↔NEAR money maths, contract args, failed-transaction detection, friendly error mapping, offer normalization, NEAR rate (all unit-tested)
+- `apps/web/src/app/api/canoe/{offers,rate}`: API routes
+- `apps/web/src/components/canoe/`, `apps/web/src/app/trip/`: three-step Trip Budget page (wallet, USD budget, pay) and wallet integration
+- `apps/web/src/lib/scraper/currency-default.ts`: flight scraping defaults to USD instead of an IP-based guess
+- `apps/web/src/styles/globals.css`, `apps/web/src/lib/theme.ts`: "Nusa" travel theme (bright blue, orange actions) as the default
+- `docs/canoe/testnet-log.md`: every recorded testnet transaction
+- `docs/superpowers/`: design specs and implementation plans
+
+## Libraries and prior work
+
+flight-finder (MIT, upstream baseline), near-sdk 5.29 (Rust), cargo-near (Docker image
+`sourcescan/cargo-near`), near-api-js 7.3.1, @hot-labs/near-connect 0.11.4, CoinGecko simple
+price API for the NEAR rate. AI providers are the upstream bring-your-own-key options (Anthropic,
+OpenAI, Gemini, local models). CANOE adds no AI calls.
+
+## Limits
+
+Testnet only. A `pay_quote` to a merchant account that does not exist would record the payment
+while the transfer refunds to the contract. The demo uses the existing `canoe-dev.testnet`. No
+stablecoins, NEAR Intents or meta transactions yet.
+
+---
+
+> The rest of this file is the upstream flight-finder README (baseline tag `pre-hackathon`), kept unchanged.
+
 <div align="center">
 
 # Flight Finder
